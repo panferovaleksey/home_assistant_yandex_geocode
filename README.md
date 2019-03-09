@@ -7,10 +7,10 @@ This component is relevant for Russian users. For other use original Google Geoc
 All titles in Russian. Address formatted for Russian features.
 
 Installation:
-For HA version before 0.88.2
+**bold**For HA version before 0.88.2
 Copy the yandex_geocode.py file and place it in <config_dir>/custom_components/sensor/yandex_geocode.py.
 
-For HA version after 0.89
+**bold**For HA version after 0.89
 Copy the yandex_geocode.py file, rename to sensor.py and place it in <config_dir>/custom_components/yandex_geocode/sensor.py.
 
 Setup in sensor section:
