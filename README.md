@@ -3,8 +3,8 @@ Custom component reverse geocoding with Yandex Geocode for Home Assistant.
 
 Reworked code based on Google Geocode Home Assistant component "michaelmcarthur" (original link: https://github.com/michaelmcarthur/GoogleGeocode-HASS)
 
-This component is relevant for Russian users. For other use original Google Geocode component.
-All titles in Russian. Address formatted for Russian features.
+**This component is relevant for Russian users, using Cyrillic. For other use original Google Geocode component.
+All titles in Russian. Address formatted for Russian features.**
 
 Installation:
 
