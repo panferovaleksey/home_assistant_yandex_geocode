@@ -25,4 +25,4 @@ api_key: your_api_key_for_yandex_geocode
   
 Yandex Geocode API key request page - https://tech.yandex.ru/maps/geocoder/
   
-  
+
