@@ -29,3 +29,4 @@ api_key: your_api_key_for_yandex_geocode
 Yandex Geocode API key request page - https://tech.yandex.ru/maps/geocoder/
   
 ![Sensor in home assistant](https://github.com/renat85/home_assistant_yandex_geocode/blob/master/HA_Sensor_Yandex.JPG?raw=true)
+![Sensor full in home assistant](https://github.com/renat85/home_assistant_yandex_geocode/blob/master/HA_Sensor_Yandex_full.png?raw=true)
