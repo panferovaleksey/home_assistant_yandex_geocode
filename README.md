@@ -1,4 +1,7 @@
 # home_assistant_yandex_geocode
+
+**UPDATE 29.03.2019 small modification for correct work in small city in Russia. Please update sensor.py from new file.**
+
 Custom component reverse geocoding with Yandex Geocode for Home Assistant.
 
 Reworked code based on Google Geocode Home Assistant component "michaelmcarthur" (original link: https://github.com/michaelmcarthur/GoogleGeocode-HASS)
