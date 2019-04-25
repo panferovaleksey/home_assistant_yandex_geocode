@@ -1,4 +1,5 @@
 # home_assistant_yandex_geocode
+**UPDATE 25.04.2019 add required additional files for Home Assistant version 0.92. Please download additional new file: manifest.json and create empty file __init__.py in component folder.**
 
 **UPDATE 29.03.2019 small modification for correct work in small city in Russia. Please update sensor.py from new file.**
 
