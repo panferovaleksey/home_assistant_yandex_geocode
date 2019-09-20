@@ -1,8 +1,6 @@
 """
 Support for Yandex Geocode sensors.
 
-For more details about this platform, please refer to the documentation at
-https://github.com/michaelmcarthur/GoogleGeocode-HASS
 """
 # -*- coding: utf-8 -*-
 from datetime import datetime
@@ -30,15 +28,15 @@ CONF_DISPLAY_ZONE = 'display_zone'
 CONF_ATTRIBUTION = "Data provided by https://geocode-maps.yandex.ru"
 CONF_GRAVATAR = 'gravatar'
 
-ATTR_COUNTRY = 'Страна'
-ATTR_REGION = 'Область'
-ATTR_COUNTY = 'Район'
-ATTR_CITY = 'Город'
 ATTR_STREET = 'Улица'
 ATTR_STREET_NUMBER = 'Номер дома'
+ATTR_CITY = 'Город'
+ATTR_COUNTY = 'Район'
+ATTR_REGION = 'Область'
+ATTR_COUNTRY = 'Страна'
 
 DEFAULT_NAME = 'Yandex Geocode'
-DEFAULT_OPTION = 'country, state'
+DEFAULT_OPTION = 'street, city'
 DEFAULT_DISPLAY_ZONE = 'display'
 DEFAULT_KEY = 'no key'
 current = '0,0'
@@ -83,13 +81,13 @@ class YandexGeocode(Entity):
         self._state = "Обновление данных"
         self._gravatar = gravatar
 
-        self._country = None
+        self._street = None
+        self._street_number = None
+        self._city = None
+        self._city = None
         self._county = None
         self._region = None
-        self._city = None
-        self._city = None
-        self._street = None
-        self._street_number = None        
+        self._country = None
         self._zone_check_current = None
 
         # Check if origin is a trackable entity
@@ -169,37 +167,39 @@ class YandexGeocode(Entity):
             if self._api_key == 'no key':
                 url = "https://geocode-maps.yandex.ru/"
             else:
-                url = "https://geocode-maps.yandex.ru/1.x/?apikey=" + self._api_key + "&geocode=" + lat + "&format=json" + "&results=1"
+                url = "https://geocode-maps.yandex.ru/1.x/?apikey=" + self._api_key + "&geocode=" + lat + "&format=json" + "&results=1" + "&kind=house"
             yandex = get(url)
             json_input = yandex.text
             decoded = json.loads(json_input)
-            country = 'Не определено'
-            county = 'Не определено'
-            state = 'Не определено'
-            city = 'Не определено'
-            street = 'Не определено'
             street_number = 'Не определено'
-                        
+            street = 'Не определено'
+            city = 'Не определено'
+            state = 'Не определено'
+            county = 'Не определено'
+            country = 'Не определено'
+
+            
+            
             for component in decoded['response']['GeoObjectCollection']['featureMember']:
                 for data in component["GeoObject"]["metaDataProperty"]["GeocoderMetaData"]["Address"]["Components"]:
-                    if 'country' in data["kind"]:
-                        country = data["name"]
-                        self._country = country
-                    if 'area' in data["kind"]:
-                        county = data["name"]
-                        self._county = county
-                    if 'province' in data["kind"]:
-                        state = data["name"]
-                        self._region = state
-                    if 'locality' in data["kind"]:
-                        city = data["name"]
-                        self._city = city
-                    if 'street' in data["kind"]:
-                        street = data["name"]
-                        self._street = street
                     if 'house' in data["kind"]:
                         street_number = data["name"]
                         self._street_number = street_number
+                    if 'street' in data["kind"]:
+                        street = data["name"]
+                        self._street = street
+                    if 'locality' in data["kind"]:
+                        city = data["name"]
+                        self._city = city
+                    if 'province' in data["kind"]:
+                        state = data["name"]
+                        self._region = state
+                    if 'area' in data["kind"]:
+                        county = data["name"]
+                        self._county = county
+                    if 'country' in data["kind"]:
+                        country = data["name"]
+                        self._country = country
             try:
                 if 'formatted' in decoded:
                     formatted_address = decoded['formatted']
@@ -223,26 +223,25 @@ class YandexGeocode(Entity):
                 display_options = self._options
                 user_display = []
 
-                if "country" in display_options:
-                    self._append_to_user_display(country)
-                if "state" in display_options:
-                    self._append_to_user_display(state)
-                if "county" in display_options:
-                    self._append_to_user_display(county)
-                if "city" in display_options:
-                    self._append_to_user_display(city)
                 if "street" in display_options:
                     user_display.append(street)
                 if "street_number" in display_options:
                     user_display.append(street_number)
-                """if "postal_code" in display_options:
-                    self._append_to_user_display(postal_code)"""
-                
+                if "city" in display_options:
+                    self._append_to_user_display(city)
+                if "county" in display_options:
+                    self._append_to_user_display(county)
+                if "state" in display_options:
+                    self._append_to_user_display(state)
+                if "postal_code" in display_options:
+                    self._append_to_user_display(postal_code)
+                if "country" in display_options:
+                    self._append_to_user_display(country)
                         
                 user_display = ', '.join(  x for x in user_display )
                 
                 if user_display == '':
-                    user_display = county
+                    user_display = street
                 self._state = user_display
             else:
                 self._state = zone_check[0].upper() + zone_check[1:]
@@ -264,13 +263,14 @@ class YandexGeocode(Entity):
 
     def _reset_attributes(self):
         """Resets attributes."""
-        self._country = None
-        self._region = None
-        self._county = None
-        self._city = None
         self._street = None
         self._street_number = None
+        self._city = None
+        self._county = None
+        self._region = None
+        self._country = None
         
+
     def _append_to_user_display(self, append_check):
         """Appends attribute to state if false."""
         if append_check == "":
