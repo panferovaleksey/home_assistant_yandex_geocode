@@ -1,5 +1,5 @@
 {
-  "domain": "iothouse.online",
+  "domain": "yandex_geocode",
   "name": "Yandex Geocode",
   "documentation": "https://github.com/renat85/home_assistant_yandex_geocode",
   "dependencies": [],
